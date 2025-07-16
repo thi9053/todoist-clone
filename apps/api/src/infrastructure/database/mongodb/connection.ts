@@ -1,10 +1,13 @@
 import mongoose from 'mongoose'
+import { config } from '@/infrastructure/config'
 
 class DatabaseConnection {
   private static instance: DatabaseConnection
   private isConnected: boolean = false
 
-  private constructor() {}
+  private constructor() {
+    this.connect()
+  }
 
   public static getInstance(): DatabaseConnection {
     if (!DatabaseConnection.instance) {
@@ -20,7 +23,7 @@ class DatabaseConnection {
     }
 
     try {
-      const connection = await mongoose.connect('???', {
+      const connection = await mongoose.connect(config.mongodbUrl, {
         maxPoolSize: 10,
         serverSelectionTimeoutMS: 5000,
         socketTimeoutMS: 45000,
