@@ -3,7 +3,7 @@ import express from 'express'
 import morgan from 'morgan'
 import helmet from 'helmet'
 import compression from 'compression'
-import router from './routes'
+import router from './presentation/http/routes'
 import DatabaseConnection from '@/infrastructure/database/mongodb/connection'
 
 const app = express()
