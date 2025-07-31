@@ -1,6 +1,9 @@
-import { NextFunction, Request, Response } from 'express'
+import { Context, Next } from 'hono'
 
-export const asyncHandler =
-  (fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) =>
-  (req: Request, res: Response, next: NextFunction) =>
-    fn(req, res, next).catch(next)
+export const asyncHandler = (fn: (c: Context, next: Next) => Promise<any>) => async (c: Context, next: Next) => {
+  try {
+    return await fn(c, next)
+  } catch (error) {
+    throw error
+  }
+}

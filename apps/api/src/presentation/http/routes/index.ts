@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import fooRouter from './foo'
 
 const router = new Hono()
 
@@ -10,5 +11,7 @@ router.get('/', (c) => {
     200
   )
 })
+
+router.route('/foo', fooRouter)
 
 export default router
