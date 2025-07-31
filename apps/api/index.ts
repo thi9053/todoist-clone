@@ -1,12 +1,16 @@
+import { serve } from '@hono/node-server'
 import app from './src/app'
 
-const server = app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server is running on port ${process.env.PORT || 3000}`)
+const port = Number(process.env.PORT) || 3000
+
+const server = serve({
+  fetch: app.fetch,
+  port
 })
 
+console.log(`Server is running on port ${port}`)
+
 process.on('SIGINT', () => {
-  server.close(() => {
-    console.log('Server closed')
-  })
+  console.log('Server closed')
   process.exit(0)
 })

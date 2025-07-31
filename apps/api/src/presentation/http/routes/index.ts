@@ -1,11 +1,14 @@
-import express from 'express'
+import { Hono } from 'hono'
 
-const router = express.Router()
+const router = new Hono()
 
-router.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Hello World'
-  })
+router.get('/', (c) => {
+  return c.json(
+    {
+      message: 'Hello World'
+    },
+    200
+  )
 })
 
 export default router
