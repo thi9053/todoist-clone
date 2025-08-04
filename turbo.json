@@ -25,6 +25,14 @@
     "android": {
       "cache": false,
       "persistent": true
+    },
+    "gen:openapi": {
+      "cache": false,
+      "persistent": true
+    },
+    "gen:api-types": {
+      "cache": false,
+      "persistent": true
     }
   }
 }

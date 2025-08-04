@@ -10,7 +10,8 @@
     "check-types": "turbo run check-types",
     "clean": "turbo clean",
     "ios": "turbo ios",
-    "android": "turbo android"
+    "android": "turbo android",
+    "generate": "turbo run --filter=api gen:openapi && turbo run --filter=mobile gen:api-types"
   },
   "devDependencies": {
     "prettier": "^3.6.2",

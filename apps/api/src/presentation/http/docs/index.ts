@@ -1,6 +1,9 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { swaggerUI } from '@hono/swagger-ui'
 import { createFooRoute } from './routes/foo'
+import { config } from '../../../infrastructure/config'
+
+const { openapiDocument } = config
 
 const docs = new OpenAPIHono()
 
@@ -9,15 +12,10 @@ docs.openapi(createFooRoute, (c) => {
   return c.json({ id: '688b21fa722e0dc291679910', name: body.name })
 })
 
-docs.doc('/openapi.json', {
-  openapi: '3.0.0',
-  info: {
-    version: '1.0.0',
-    title: 'Todoist Clone API',
-    description: 'API documentation for the Todoist Clone application'
-  }
-})
+docs.doc('/openapi.json', openapiDocument)
 
 docs.get('/', swaggerUI({ url: '/docs/openapi.json' }))
+
+export const openapi = docs.getOpenAPIDocument(openapiDocument)
 
 export default docs

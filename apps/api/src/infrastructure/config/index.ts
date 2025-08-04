@@ -16,5 +16,13 @@ if (!result.success) {
 
 export const config = {
   port: parseInt(result.data.PORT),
-  mongodbUrl: result.data.MONGODB_URL
+  mongodbUrl: result.data.MONGODB_URL,
+  openapiDocument: {
+    openapi: '3.0.1',
+    info: {
+      version: '1.0.0',
+      title: 'Todoist Clone API',
+      description: 'API documentation for the Todoist Clone application'
+    }
+  }
 }
