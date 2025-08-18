@@ -3,9 +3,8 @@ import { Schema, model, Document } from 'mongoose'
 export interface IUserDocument extends Document {
   _id: string
   email: string
-  name: string
-  createdAt: Date
-  updatedAt: Date
+  password: string
+  profile_id: Schema.Types.ObjectId
 }
 
 const userSchema = new Schema<IUserDocument>(
@@ -19,12 +18,14 @@ const userSchema = new Schema<IUserDocument>(
       match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Please enter a valid email'],
       index: true
     },
-    name: {
+    password: {
       type: String,
-      required: [true, 'Name is required'],
-      trim: true,
-      minlength: [2, 'Name must be at least 2 characters'],
-      maxlength: [50, 'Name must be less than 50 characters']
+      required: [true, 'Password is required'],
+      minlength: [8, 'Password must be at least 8 characters']
+    },
+    profile_id: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'Profile ID is required']
     }
   },
   {
@@ -35,6 +36,6 @@ const userSchema = new Schema<IUserDocument>(
 )
 
 userSchema.index({ email: 1 }, { unique: true })
-userSchema.index({ createdAt: -1 })
+userSchema.index({ username: 1 }, { unique: true })
 
 export const UserModel = model<IUserDocument>('User', userSchema)
