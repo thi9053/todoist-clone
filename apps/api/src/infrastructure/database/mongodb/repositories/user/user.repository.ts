@@ -11,4 +11,9 @@ export class UserRepository implements IUserRepository {
     await newUser.save()
     return userDocumentToEntity(newUser)
   }
+
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await UserModel.findOne({ email })
+    return user ? userDocumentToEntity(user) : null
+  }
 }
