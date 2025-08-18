@@ -3,6 +3,7 @@ import { swaggerUI } from '@hono/swagger-ui'
 import { createFooRoute } from './routes/foo'
 import { config } from '../../../infrastructure/config'
 import { createUserRoute } from './routes/user'
+import { loginRoute, introspectRoute } from './routes/auth'
 
 const { openapiDocument } = config
 
@@ -16,6 +17,20 @@ docs.openapi(createFooRoute, (c) => {
 docs.openapi(createUserRoute, (c) => {
   const body = c.req.valid('json')
   return c.json({ id: '688b21fa722e0dc291679910', email: body.email })
+})
+
+docs.openapi(loginRoute, (c) => {
+  const body = c.req.valid('json')
+  return c.json({
+    accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+    refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+    user: { id: '688b21fa722e0dc291679910', email: body.email }
+  })
+})
+
+docs.openapi(introspectRoute, (c) => {
+  const body = c.req.valid('json')
+  return c.json({ isValid: true })
 })
 
 docs.doc('/openapi.json', openapiDocument)

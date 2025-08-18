@@ -27,6 +27,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "@hono/swagger-ui": "^0.5.2"
+    "@hono/swagger-ui": "^0.5.2",
+    "jsonwebtoken": "^9.0.2"
   }
 }

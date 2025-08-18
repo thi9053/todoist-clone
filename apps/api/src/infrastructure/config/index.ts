@@ -5,7 +5,9 @@ dotenv.config()
 
 const envSchema = z.object({
   PORT: z.string().default('3000'),
-  MONGODB_URL: z.string().regex(/^mongodb:\/\/.+$/)
+  MONGODB_URL: z.string().regex(/^mongodb:\/\/.+$/),
+  JWT_ACCESS_TOKEN_SECRET: z.string(),
+  JWT_REFRESH_TOKEN_SECRET: z.string()
 })
 
 const result = envSchema.safeParse(process.env)
@@ -24,5 +26,7 @@ export const config = {
       title: 'Todoist Clone API',
       description: 'API documentation for the Todoist Clone application'
     }
-  }
+  },
+  jwtAccessTokenSecret: result.data.JWT_ACCESS_TOKEN_SECRET,
+  jwtRefreshTokenSecret: result.data.JWT_REFRESH_TOKEN_SECRET
 }

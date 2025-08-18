@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import fooRouter from './foo'
 import userRouter from './user'
+import authRouter from './auth'
 
 const router = new Hono()
 
@@ -15,5 +16,6 @@ router.get('/', (c) => {
 
 router.route('/foo', fooRouter)
 router.route('/user', userRouter)
+router.route('/auth', authRouter)
 
 export default router

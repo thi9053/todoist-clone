@@ -3,4 +3,5 @@ export interface User {
   email: string
   password: string
   profile_id: string
+  refreshToken?: string
 }

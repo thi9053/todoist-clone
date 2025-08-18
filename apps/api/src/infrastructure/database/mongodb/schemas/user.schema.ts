@@ -5,6 +5,7 @@ export interface IUserDocument extends Document {
   email: string
   password: string
   profile_id: Schema.Types.ObjectId
+  refreshToken?: string
 }
 
 const userSchema = new Schema<IUserDocument>(
@@ -26,6 +27,9 @@ const userSchema = new Schema<IUserDocument>(
     profile_id: {
       type: Schema.Types.ObjectId,
       required: [true, 'Profile ID is required']
+    },
+    refreshToken: {
+      type: String
     }
   },
   {

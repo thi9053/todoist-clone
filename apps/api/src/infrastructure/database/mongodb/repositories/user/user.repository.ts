@@ -12,8 +12,18 @@ export class UserRepository implements IUserRepository {
     return userDocumentToEntity(newUser)
   }
 
+  async findById(id: string): Promise<User | null> {
+    const user = await UserModel.findById(id)
+    return user ? userDocumentToEntity(user) : null
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     const user = await UserModel.findOne({ email })
     return user ? userDocumentToEntity(user) : null
+  }
+
+  async update(id: string, user: User): Promise<User | null> {
+    const updatedUser = await UserModel.findByIdAndUpdate(id, user, { new: true })
+    return updatedUser ? userDocumentToEntity(updatedUser) : null
   }
 }
