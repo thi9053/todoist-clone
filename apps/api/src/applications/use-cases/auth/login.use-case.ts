@@ -5,8 +5,7 @@ import { LoginRequestDTO } from '@/applications/dtos/auth/login/request.dto'
 import { LoginResponseDTO } from '@/applications/dtos/auth/login/response.dto'
 import { InternalServerError, UnauthorizedError } from '@/domain/error'
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
-import { config } from '@/infrastructure/config'
+import { generateAccessToken, generateRefreshToken } from '@/infrastructure/services/jsonwebtoken'
 import { userEntityToResponseDto } from '@/applications/mappers/user'
 
 @injectable()
@@ -24,12 +23,12 @@ export class LoginUseCase {
       throw new UnauthorizedError('Invalid password')
     }
 
-    const accessToken = jwt.sign({ userId: user.id }, config.jwtAccessTokenSecret, { expiresIn: '1h' })
-    const refreshToken = jwt.sign({ userId: user.id }, config.jwtRefreshTokenSecret, { expiresIn: '7d' })
+    const accessToken = generateAccessToken(user)
+    const refreshToken = generateRefreshToken(user)
 
     const updatedUser = await this.userRepository.update(user.id as string, { ...user, refreshToken })
     if (!updatedUser) {
-      throw new InternalServerError('Failed to update user')
+      throw new InternalServerError('Failed to update refresh token')
     }
 
     return { accessToken, refreshToken, user: userEntityToResponseDto(updatedUser) }

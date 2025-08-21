@@ -1,5 +1,4 @@
 import { Schema, model, Document } from 'mongoose'
-import { IUserDocument } from './user.schema'
 
 export interface IProfileDocument extends Document {
   _id: string

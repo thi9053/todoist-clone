@@ -6,12 +6,15 @@ import { userEntityToResponseDto, userRequestDtoToEntity } from '@/applications/
 import { CreateUserResponseDTO } from '@/applications/dtos/user/create/response.dto'
 import bcrypt from 'bcryptjs'
 import { BadRequestError } from '@/domain/error'
+import { IdentityRepository } from '@/infrastructure/database/mongodb/repositories/identity/identity.repository'
+import { AuthProvider } from '@/domain/types/auth'
 
 @injectable()
 export class CreateUserUseCase {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly profileRepository: ProfileRepository
+    private readonly profileRepository: ProfileRepository,
+    private readonly identityRepository: IdentityRepository
   ) {}
 
   async execute(user: CreateUserRequestDTO): Promise<CreateUserResponseDTO> {
@@ -24,6 +27,16 @@ export class CreateUserUseCase {
     const newUser = await this.userRepository.create(
       userRequestDtoToEntity({ ...user, password: hashedPassword }, newProfile.id)
     )
+
+    if (!newUser || !newUser.id) {
+      throw new BadRequestError('Failed to create user')
+    }
+
+    await this.identityRepository.create({
+      user_id: newUser.id,
+      provider: AuthProvider.EMAIL
+    })
+
     return userEntityToResponseDto(newUser)
   }
 }
